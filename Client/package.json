@@ -1,0 +1,46 @@
+{
+  "name": "intel-real-sense-angular",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^19.1.5",
+    "@angular/cdk": "^19.0.3",
+    "@angular/common": "^19.1.5",
+    "@angular/compiler": "^19.1.5",
+    "@angular/core": "^19.1.5",
+    "@angular/forms": "^19.1.5",
+    "@angular/material": "^19.0.3",
+    "@angular/platform-browser": "^19.1.5",
+    "@angular/platform-browser-dynamic": "^19.1.5",
+    "@angular/router": "^19.1.5",
+    "angular-three": "^3.7.2",
+    "hammerjs": "^2.0.8",
+    "ngxtension": "^4.0.0",
+    "rxjs": "~7.8.0",
+    "socket.io-client": "^4.8.1",
+    "three": "^0.171.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.0.3",
+    "@angular/cli": "^19.1.6",
+    "@angular/compiler-cli": "^19.1.5",
+    "@types/jasmine": "~5.1.0",
+    "@types/three": "^0.173.0",
+    "jasmine-core": "~5.4.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.6.2"
+  }
+}

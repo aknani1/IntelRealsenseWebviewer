@@ -1,0 +1,169 @@
+<!-- File: sidebar-controls.component.html -->
+<div class="sidebar">
+  <!-- Sidebar Header -->
+  <!-- Update in sidebar-controls.component.html -->
+
+  <div class="sidebar-header">
+    <div class="header-content">
+      <div class="branding">
+        <mat-icon class="brand-icon">precision_manufacturing</mat-icon>
+        <div class="brand-text">
+          <span class="primary">RealSense </span>
+          <span class="secondary">Controller</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Camera Info Card -->
+  <!-- Collapsible Device Profile Card -->
+  <div class="module-card info-card">
+    <div class="card-header" (click)="toggleDeviceProfile()">
+      <div class="module-icon">
+        <mat-icon>biotech</mat-icon>
+      </div>
+      <h3>Device Profile</h3>
+      <mat-icon class="collapse-icon">
+        {{ deviceProfileCollapsed ? 'expand_more' : 'expand_less' }}
+      </mat-icon>
+    </div>
+    <div class="card-content" *ngIf="!deviceProfileCollapsed">
+      <div class="camera-info">
+        <div class="info-row">
+          <span class="info-label">Name:</span>
+          <span class="info-value">{{ cameraName }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Serial:</span>
+          <span class="info-value serial-number">{{ cameraSerial }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Firmware:</span>
+          <span class="info-value">{{ cameraFirmware }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Interface:</span>
+          <span class="info-value usb-type">{{ cameraUsb }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Depth Module Card -->
+  <div class="module-card" [class.active]="depthModuleEnabled">
+    <div class="card-header" (click)="depthModuleEnabled = !depthModuleEnabled">
+      <div class="module-icon">
+        <mat-icon>waves</mat-icon>
+      </div>
+      <h3>Depth Module</h3>
+      <mat-slide-toggle
+        [(ngModel)]="depthModuleEnabled"
+        (ngModelChange)="onDepthToggle($event)"
+        (click)="$event.stopPropagation()">
+      </mat-slide-toggle>
+    </div>
+    <div class="card-content" *ngIf="depthModuleEnabled">
+      <div class="control-group">
+        <div class="input-group">
+          <label class="control-label">Resolution</label>
+          <mat-select [(ngModel)]="selectedDepthResolution" (selectionChange)="onDepthResolutionChange()">
+            <mat-option value="640x360">640×360 </mat-option>
+            <mat-option value="1280x720">1280×720 </mat-option>
+          </mat-select>
+        </div>
+
+        <div class="input-group">
+          <label class="control-label">Frame Rate</label>
+          <mat-select [(ngModel)]="selectedDepthFrameRate" (selectionChange)="onDepthResolutionChange()">
+            <mat-option value="15">15 FPS</mat-option>
+            <mat-option value="30">30 FPS</mat-option>
+          </mat-select>
+        </div>
+
+        <div class="input-group toggle-group">
+          <label class="control-label">Depth Metadata</label>
+          <mat-slide-toggle
+            [(ngModel)]="depthMetadataEnabled"
+            (ngModelChange)="onDepthMetadataToggle($event)">
+          </mat-slide-toggle>
+        </div>
+
+        <div class="input-group">
+          <label class="control-label">Exposure Control</label>
+          <div class="holographic-slider">
+            <div class="slider-track" [style.width]="(depthExposureValue/1000)*100 + '%'"></div>
+            <input type="range" min="0" max="1000" step="50"
+                  [(ngModel)]="depthExposureValue"
+                  (change)="onDepthExposureChange()" />
+            <div class="slider-value">{{ depthExposureValue }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RGB Module Card -->
+  <div class="module-card" [class.active]="rgbCameraEnabled">
+    <div class="card-header" (click)="rgbCameraEnabled = !rgbCameraEnabled">
+      <div class="module-icon">
+        <mat-icon>color_lens</mat-icon>
+      </div>
+      <h3>RGB Module</h3>
+      <mat-slide-toggle
+        [(ngModel)]="rgbCameraEnabled"
+        (ngModelChange)="onRgbToggle($event)"
+        (click)="$event.stopPropagation()">
+      </mat-slide-toggle>
+    </div>
+    <div class="card-content" *ngIf="rgbCameraEnabled">
+      <div class="control-group">
+        <div class="input-group">
+          <label class="control-label">Resolution</label>
+          <mat-select [(ngModel)]="selectedRGBResolution" (selectionChange)="onRgbResolutionChange()">
+            <mat-option value="640x360">640×360 RGB</mat-option>
+            <mat-option value="1280x720">1280×720 RGB</mat-option>
+          </mat-select>
+        </div>
+
+        <div class="input-group">
+          <label class="control-label">Frame Rate</label>
+          <mat-select [(ngModel)]="selectedRGBFrameRate" (selectionChange)="onRgbResolutionChange()">
+            <mat-option value="15">15 FPS</mat-option>
+            <mat-option value="30">30 FPS</mat-option>
+          </mat-select>
+        </div>
+
+        <div class="input-group toggle-group">
+          <label class="control-label">Color Metadata</label>
+          <mat-slide-toggle
+            [(ngModel)]="rgbMetadataEnabled"
+            (ngModelChange)="onRgbMetadataToggle($event)">
+          </mat-slide-toggle>
+        </div>
+
+        <div class="input-group">
+          <label class="control-label">Exposure Control</label>
+          <div class="holographic-slider">
+            <div class="slider-track" [style.width]="(rgbExposureValue/1000)*100 + '%'"></div>
+            <input type="range" min="0" max="1000" step="50"
+                  [(ngModel)]="rgbExposureValue"
+                  (change)="onRgbExposureChange()" />
+            <div class="slider-value">{{ rgbExposureValue }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Controls -->
+  <div class="system-controls">
+    <button mat-button class="hard-reset-btn" (click)="onHardReset()">
+      <mat-icon>restart_alt</mat-icon>
+      <span>Factory Reset</span>
+    </button>
+  </div>
+</div>
+
+
+

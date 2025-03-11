@@ -1,0 +1,66 @@
+// Example color variables 
+$dark-background: #1e1e1e;          // or #252526
+$darkest-background: #121212;       
+$realsense-blue: #009fde;
+$primary-text: #f0f0f0;             // near-whitish text
+$secondary-text: #b8b8b8;           // lighter gray for secondary text
+$link-color: #00aaff;               // or any accent you want
+
+// Scrollbar variables
+$scrollbar-width: 8px;
+$scrollbar-radius: 4px;
+$scrollbar-hover-lighten: 15%;
+// Scrollbar colors
+$scrollbar-thumb: #2f2f2f;
+$scrollbar-track: $darkest-background;
+$scrollbar-hover: #3f3f3f;
+$realsense-gradient: linear-gradient(
+  135deg, 
+  adjust-hue($realsense-blue, -15deg) 0%,
+  $realsense-blue 100%
+);
+@mixin sliding-toggle {
+    --toggle-width: 48px;
+    --toggle-height: 24px;
+    --thumb-size: 20px;
+    --thumb-offset: 2px;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+    .mat-slide-toggle-bar {
+      width: var(--toggle-width);
+      height: var(--toggle-height);
+      background: rgba($primary-text, 0.1) !important;
+      border-radius: 12px;
+      transition: background-color var(--transition);
+    }
+  
+    .mat-slide-toggle-thumb {
+      width: var(--thumb-size);
+      height: var(--thumb-size);
+      transform: translateX(var(--thumb-offset));
+      transition: transform var(--transition), 
+                  background-color var(--transition);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(145deg, 
+                  rgba(white, 0.9), 
+                  rgba(white, 0.2));
+        border-radius: 50%;
+      }
+    }
+  
+    &.mat-checked {
+      .mat-slide-toggle-thumb {
+        transform: translateX(calc(var(--toggle-width) - var(--thumb-size) - var(--thumb-offset)));
+        background: $realsense-blue !important;
+      }
+      .mat-slide-toggle-bar {
+        background: rgba($realsense-blue, 0.2) !important;
+      }
+    }
+  }
+  

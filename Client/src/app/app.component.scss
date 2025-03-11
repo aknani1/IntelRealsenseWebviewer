@@ -1,0 +1,29 @@
+@import './styles/variables';
+/* app.component.scss */
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+
+.app-main {
+  height: 100vh;
+}
+/* app.component.scss */
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+
+  app-three-d-viewer{
+    flex: 1;
+    min-height: 0;
+  }
+  /*app-cam-viewer {
+    flex: 1;
+    min-height: 0; // Fixes Firefox flexbox issue
+  }*/
+}

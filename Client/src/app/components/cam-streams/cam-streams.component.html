@@ -1,0 +1,77 @@
+<!-- File: cam-streams.component.html -->
+<div class="streaming-area">
+  <!-- Main container controlling single vs double stream layout -->
+  <div class="streaming-container"
+       [class.single-stream]="(showDepth && !showRGB) || (!showDepth && showRGB) || show3D"
+       [class.double-stream]="showDepth && showRGB && !show3D">
+    
+    <!-- If nothing is toggled, show placeholder -->
+    <div *ngIf="!showDepth && !showRGB" class="placeholder-text">
+      Nothing to stream!
+    </div>
+
+    <!-- Depth Stream -->
+    <div *ngIf="showDepth && !show3D" class="stream-box">
+      <h3 class="stream-title">Depth Stream</h3>
+      <div class="img-container">
+        <ng-container *ngIf="depthImageUrl; else noDepthStream">
+          <img
+            [src]="depthImageUrl"
+            alt="Depth Stream"
+          />
+          <div class="metadata-overlay" *ngIf="depthMetadataLines.length > 0">
+            <ul>
+              <li *ngFor="let line of depthMetadataLines" 
+                  [attr.data-label]="line.split(':')[0]"
+                  [attr.data-value]="line.split(':')[1]?.trim()"></li>
+            </ul>
+          </div>
+        </ng-container>
+        <ng-template #noDepthStream>
+          <div class="no-stream-center">No depth stream available</div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- RGB Stream -->
+    <div *ngIf="showRGB && !show3D" class="stream-box">
+      <h3 class="stream-title">RGB Stream</h3>
+      <div class="img-container">
+        <ng-container *ngIf="colorImageUrl; else noRgbStream">
+          <img
+            [src]="colorImageUrl"
+            alt="RGB Stream"
+          />
+          <div class="metadata-overlay" *ngIf="rgbMetadataLines.length > 0">
+            <ul>
+              <li *ngFor="let line of rgbMetadataLines" 
+                  [attr.data-label]="line.split(':')[0]"
+                  [attr.data-value]="line.split(':')[1]?.trim()"></li>
+            </ul>
+          </div>
+        </ng-container>
+        <ng-template #noRgbStream>
+          <div class="no-stream-center">No RGB stream available</div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- 3D Stream -->
+    <div *ngIf="show3D" class="stream-box">
+      <h3 class="stream-title">3D Stream</h3>
+      <div class="img-container">
+        <ng-container *ngIf="Url3D; else no3DStream">
+          <img
+            [src]="Url3D"
+            alt="3D Viewer Stream"
+          />
+        </ng-container>
+        <ng-template #no3DStream>
+          <div class="no-stream-center">No 3D stream available</div>
+        </ng-template>
+      </div>
+    </div>
+
+
+  </div>
+</div>

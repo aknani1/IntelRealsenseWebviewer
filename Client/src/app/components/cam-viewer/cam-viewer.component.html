@@ -1,0 +1,83 @@
+<!-- File: cam-viewer.component.html -->
+<app-connection-status></app-connection-status>
+<mat-sidenav-container class="viewer-container">
+  <mat-sidenav #sidenav
+               mode="side"
+               position="start"
+               [(opened)]="sidePanelOpen"
+               class="control-sidenav">
+
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+      <img src="../../../assets/realsense-logo.png" alt="Intel RealSense" class="sidebar-logo">
+    </div>
+
+    <!-- Sidebar Content -->
+    <div class="sidebar-content">
+      <app-sidebar-controls
+        (depthToggleChange)="onDepthToggle($event)"
+        (rgbToggleChange)="onRgbToggle($event)"
+        (depthResolutionChange)="updateDepthConfig($event)"
+        (rgbResolutionChange)="updateRGBConfig($event)"
+        (depthExposureChange)="updateDepthExposure($event)"
+        (rgbExposureChange)="updateRGBExposure($event)"
+        (depthMetadataToggle)="onDepthMetadataToggle($event)"
+        (rgbMetadataToggle)="onRgbMetadataToggle($event)">
+      </app-sidebar-controls>
+    </div>
+  </mat-sidenav>
+
+  <!-- Main content area -->
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="app-toolbar">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>{{ sidePanelOpen ? 'chevron_left' : 'menu' }}</mat-icon>
+      </button>
+      <span class="app-title">Intel RealSense Viewer</span>
+
+      <!-- Put any extra icons or action buttons on the right -->
+      <span class="spacer"></span>
+      <!-- Replace existing button-group with this -->
+      <div class="button-group">
+        <button class="toggle-btn" 
+                [class.active]="activeButton === 'button1'"
+                (click)="setActiveButton('button1')">
+          2D
+        </button>
+        <div class="divider"></div>
+        <button class="toggle-btn"
+                [class.active]="activeButton === 'button2'"
+                (click)="setActiveButton('button2')">
+          3D
+        </button>
+      </div>
+     
+      <button mat-icon-button>
+        <mat-icon>help_outline</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <div class="content-area">
+      <app-cam-streams
+        [showDepth]="showDepth"
+        [showRGB]="showRGB"
+        [show3D]="show3D"
+        [depthImageUrl]="depthImageUrl"
+        [colorImageUrl]="colorImageUrl"
+        [Url3D]="Url3D"
+        [depthMetadataLines]="depthMetadataLines"
+        [rgbMetadataLines]="rgbMetadataLines">
+      </app-cam-streams>
+
+      
+
+      <!-- Overlay while reconfiguring -->
+      <div class="overlay" *ngIf="isReconfiguring">
+        <div class="overlay-content">
+          <mat-icon class="spinner">autorenew</mat-icon>
+          <p>Reconfiguring. Please wait...</p>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

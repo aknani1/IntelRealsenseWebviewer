@@ -1,0 +1,7 @@
+<!-- connection-status.component.html -->
+<div class="status-container" [class.connected]="deviceConnected">
+    <div class="status-indicator"></div>
+    <span class="status-text">
+      {{ getStatusText() }}
+    </span>
+  </div>

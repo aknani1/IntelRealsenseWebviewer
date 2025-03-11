@@ -1,0 +1,361 @@
+@import '../../styles/_variables.scss';
+
+.streaming-area {
+  width: 100%;
+  height:calc(100vh - 64px); // Account for header
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  position: relative;
+  background: linear-gradient(45deg, $darkest-background, darken($darkest-background, 2%));
+  overflow: scroll; // to contain the pseudo-element
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: url('../assets/waveform.svg') repeat;
+    opacity: 0.05;
+    animation: parallaxMove 30s linear infinite;
+  }
+}
+
+@keyframes parallaxMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(20%, 10%);
+  }
+}
+
+.streaming-container {
+  position: relative; // Add this for absolute positioning context
+  height: 100%; // Ensure full height
+  // When empty state is shown
+  &:has(.placeholder-text) {
+    border: 1px solid rgba($realsense-blue, 0.1);
+    background-image:
+      linear-gradient(
+        45deg,
+        rgba($realsense-blue, 0.03) 25%,
+        transparent 25%,
+        transparent 75%,
+        rgba($realsense-blue, 0.03) 75%
+      ),
+      linear-gradient(
+        45deg,
+        rgba($realsense-blue, 0.03) 25%,
+        transparent 25%,
+        transparent 75%,
+        rgba($realsense-blue, 0.03) 75%
+      );
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+  }
+
+  &.single-stream {
+    .stream-box {
+      flex: 1 1 60%;
+      max-width: 90%;
+      height: 90%;
+    }
+  }
+
+  &.double-stream {
+    .stream-box {
+      height: 90%;
+      max-width: calc(50% - 1rem);
+    }
+  }
+}
+
+/* Unified stream-box styles */
+.stream-box {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba($realsense-blue, 0.15);
+  background: linear-gradient(145deg, #1a1a1a, #151515);
+  border-radius: 8px;
+
+  /*
+    Limit the transition to border-color, box-shadow, and transform
+    so that minor layout or sizing changes won’t cause the entire box
+    to animate each time a new frame arrives.
+  */
+  transition:
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow   0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform    0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    border-color: rgba($realsense-blue, 0.3);
+    transform: translateY(-2px);
+    box-shadow:
+      0 6px 16px rgba(0, 159, 222, 0.15),
+      0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  .stream-title {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+    background: rgba($darkest-background, 0.7);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    backdrop-filter: blur(4px);
+    color: $primary-text;
+  }
+}
+
+.img-container {
+  width: 100%;
+  height: 100%;
+  background: $darkest-background !important;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    image-rendering: crisp-edges;
+  }
+}
+
+.placeholder-text {
+  font-size: 2.5rem; // Increased from 2rem
+  font-weight: 300; // Lighter weight for modern look
+  color: rgba($primary-text, 0.7); // Use primary text with opacity
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  gap: 1.5rem;
+  animation: fadeIn 0.3s ease-out;
+
+  &:before {
+    content: '🎥';
+    font-size: 4rem;
+    filter: grayscale(30%);
+    opacity: 0.6;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.metadata-overlay {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: rgba($darkest-background, 0.8) !important;
+  backdrop-filter: blur(4px);
+  padding: 0.8rem 1rem !important;
+  border-radius: 6px;
+  max-width: 300px;
+  font-family: 'Roboto Mono', monospace;
+
+  ul {
+    li {
+      font-size: 0.75rem;
+      line-height: 1.4;
+      padding: 2px 0;
+      color: lighten($secondary-text, 10%);
+
+      &:not(:last-child) {
+        border-bottom: 1px solid rgba($realsense-blue, 0.1);
+      }
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .streaming-container {
+    &.double-stream {
+      flex-direction: column;
+
+      .stream-box {
+        max-width: 100%;
+        height: 48%;
+      }
+    }
+  }
+}
+
+.no-stream-center {
+  color: rgba($primary-text, 0.6) !important;
+  font-size: 1.4rem;
+  font-weight: 300;
+  padding: 2rem;
+  align-items: center;
+
+  &:before {
+    content: '';
+    align-items: center;
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+}
+
+.streaming-container {
+  &.double-stream {
+    display: grid;
+    gap: 1.5rem;
+    padding: 1.5rem;
+
+    .stream-box {
+      max-width: 100%;
+      height: 100%;
+      margin: 0;
+      aspect-ratio: 16/9; // Maintain camera aspect ratio
+
+      .img-container {
+        height: 100%;
+
+        img {
+          object-fit: cover; // Fill container while maintaining aspect ratio
+        }
+      }
+    }
+  }
+}
+
+/* Specific double-stream layout overrides */
+.streaming-container {
+  &.double-stream {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    height: 100%;
+    padding: 1.5rem;
+
+    .stream-box {
+      margin: 0;
+      height: 100%;
+      aspect-ratio: 16/9;
+
+      .img-container {
+        height: 100%;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+    }
+  }
+}
+
+.metadata-overlay {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: rgba($darkest-background, 0.9) !important;
+  color: $primary-text !important;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  border: 1px solid rgba($realsense-blue, 0.3);
+  max-width: 300px;
+  backdrop-filter: blur(4px);
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      font-size: 0.8rem;
+      line-height: 1.4;
+      padding: 0.2rem 0;
+      list-style-type: none;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid rgba($realsense-blue, 0.2);
+      }
+    }
+  }
+}
+
+/* Loading overlay for stream images */
+
+/* Resizable/scrollable metadata overlay extras */
+.metadata-overlay {
+  max-height: 40vh;
+  overflow-y: auto;
+  resize: vertical;
+
+  .metadata-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    h5 {
+      margin: 0;
+      color: $realsense-blue;
+    }
+
+    button {
+      min-width: auto;
+      padding: 0 0.25rem;
+    }
+  }
+
+  .metadata-key {
+    color: $secondary-text;
+
+    &::after {
+      content: ':';
+      margin-right: 0.5rem;
+    }
+  }
+}
+.metadata-overlay {
+  background: rgba($darkest-background, 0.95) !important;
+  border: 1px solid rgba($realsense-blue, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  
+  ul {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.5rem 1.5rem;
+    
+    li {
+      display: contents;
+      &:before {
+        content: attr(data-label);
+        color: $secondary-text;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      &:after {
+        content: attr(data-value);
+        color: $primary-text;
+        font-weight: 400;
+        text-align: right;
+      }
+    }
+  }
+}

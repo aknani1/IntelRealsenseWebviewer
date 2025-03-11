@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RealSense Camera Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <h1>RealSense Camera Viewer</h1>
+    <img id="video-stream" src="">
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        socket.on('data', function(data) {
+            document.getElementById('video-stream').src = 'data:image/jpeg;base64,' + data.image;
+        });
+    </script>
+</body>
+</html>
