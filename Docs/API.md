@@ -3,64 +3,98 @@
 
 ## REST Endpoints
 
-### Camera Information
-```http
-GET /api/camera_info
-Returns basic information about the connected RealSense camera.
+### `GET /api/camera_info`
+Retrieves connected camera information.
 
-Response
-json
+**Response:**
+```json
 {
-    "name": "Intel RealSense D435i",
-    "serial_number": "123456789",
-    "firmware_version": "05.12.14.100",
-    "usb_type_descriptor": "3.2"
+  "name": "Intel RealSense D435",
+  "serial_number": "ABC123XYZ456",
+  "firmware_version": "5.12.15.0",
+  "usb_type_descriptor": "USB 3.2 Gen 1"
 }
-Camera Configuration
-http
-POST /api/configure
+```
+
+---
+
+### `POST /api/configure`
 Updates camera stream configuration.
 
-Request Body
-json
+**Request Body:**
+```json
 {
-    "module": "rgb|depth",
-    "resolution": "640x360|1280x720",
-    "frame_rate": "15|30"
+  "module": "rgb",
+  "resolution": "1280x720",
+  "frame_rate": 30
 }
-Exposure Control
-http
-POST /api/exposure
+```
+
+**Success Response:**
+```json
+{
+  "message": "RGB updated to 1280x720 @ 30 FPS"
+}
+```
+
+---
+
+### `POST /api/exposure`
 Adjusts camera exposure settings.
 
-Request Body
-json
+**Request Body:**
+```json
 {
-    "module": "rgb|depth",
-    "exposure": 1000
+  "module": "depth",
+  "exposure": 8500
 }
-Metadata Toggle
-http
-POST /api/set_metadata
-Toggles metadata overlay for specified stream.
+```
 
-Request Body
-json
+**Success Response:**
+```json
 {
-    "module": "rgb|depth",
-    "state": true|false
+  "message": "Depth exposure updated",
+  "exposure": 8500
 }
-3D Viewer Toggle
-http
-POST /api/set3D
+```
+
+---
+
+### `POST /api/set_metadata`
+Toggles metadata overlay for the specified stream.
+
+**Request Body:**
+```json
+{
+  "module": "rgb",
+  "state": true
+}
+```
+
+---
+
+### `POST /api/set3D`
 Toggles 3D point cloud visualization.
 
-Request Body
-json
+**Request Body:**
+```json
 {
-    "show3D": true|false
+  "show3D": true
 }
-Hard Reset
-http
-POST /api/hard_reset
+```
+
+---
+
+### `POST /api/hard_reset`
 Resets all camera settings to default values.
+
+**Success Response:**
+```json
+{
+  "message": "Full system reset complete"
+}
+```
+
+
+  
+
